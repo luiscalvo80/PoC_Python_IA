@@ -1,25 +1,54 @@
-name: Pdf_Extractor
+name: PDF Text Extraction
 
 on:
-  schedule:
-    - cron: "*/8 * * * *"
-  workflow_dispatch:
-
-env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  push:
+    branches: [ main ]
 
 jobs:
-  scrape-latest:
+  extract_text:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2.0.0
-        with:
-          python-version: '3.7'
-      - name: Install requirements
-        run: pip install -r .github/workflows/requirements.txt
-      - name: Run Pdf_extractor
-        run: python .github/workflows/main.py
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --only-binary :all: PyMuPDF
+
+    - name: Run script
+      run: python main.py
+
+    - name: Upload text file
+      uses: actions/upload-artifact@v2
+      with:
+        name: extracted_text
+        path: C:/Users/lcalvo/OneDrive - Volvo Cars/Desktop/Professional Portfolio/Python/TEST/extracted_text.txt
+
+  save_text:
+    needs: extract_text
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download text file
+      uses: actions/download-artifact@v2
+      with:
+        name: extracted_text
+        path: C:/Users/lcalvo/OneDrive - Volvo Cars/Desktop/Professional Portfolio/Python/TEST/
+
+    - name: Commit and push
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Add extracted text file" -a
+        git push
