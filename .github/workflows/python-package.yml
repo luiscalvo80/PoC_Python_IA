@@ -22,4 +22,4 @@ jobs:
       - name: Install requirements
         run: pip install -r .github/workflows/requirements.txt
       - name: Run Pdf_extractor
-        run: python main.py
+        run: python .github/workflows/main.py
