@@ -20,6 +20,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install requirements
-        run: pip install -r requirements.txt
+        run: pip install -r .github/workflows/requirements.txt
       - name: Run Pdf_extractor
         run: python main.py
