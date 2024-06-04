@@ -1,8 +1,7 @@
 name: PDF_Extraction_V3
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   extract_text:
