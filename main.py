@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import os
 
 # Hardcoded path to the PDF file
-pdf_path = ".pdf_files/YV1XZEHR3R2326083.pdf"
+pdf_path = "./.pdf_files/YV1XZEHR3R2326083.pdf"
 
 def extract_text_from_pdf(pdf_path):
     # Check if the file exists
@@ -30,6 +30,6 @@ def save_text_to_file(text, output_file):
 if __name__ == "__main__":
     text = extract_text_from_pdf(pdf_path)
     if text:
-        output_file = "C:/Users/lcalvo/OneDrive - Volvo Cars/Desktop/Professional Portfolio/Python/TEST/extracted_text.txt"
+        output_file = pdf_path = "./.output/extracted_text.txt"
         save_text_to_file(text, output_file)
         print(f"Extracted text saved to '{output_file}'.")
