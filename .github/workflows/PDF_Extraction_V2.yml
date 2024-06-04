@@ -1,0 +1,60 @@
+name: PDF Text Extraction
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  extract_text:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install PyMuPDF
+
+    - name: Upload PDF file
+      uses: actions/upload-artifact@v4
+      with:
+        name: pdf_file
+        path: pdf_files/YV1XZEHR3R2326083.pdf # Adjust the path as per your repository structure
+
+    - name: Run script
+      run: python .github/workflows/main.py
+
+    - name: Upload extracted text file
+      uses: actions/upload-artifact@v4
+      with:
+        name: extracted_text
+        path: ./output/extracted_text.txt # Adjust the path as per your script output
+
+  save_text:
+    needs: extract_text
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download extracted text file
+      uses: actions/download-artifact@v2
+      with:
+        name: extracted_text
+        path: ./output/
+
+    - name: Commit and push
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add ./output/extracted_text.txt
+        git commit -m "Add extracted text file"
+        git push
