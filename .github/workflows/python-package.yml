@@ -23,7 +23,7 @@ jobs:
         pip install --only-binary :all: PyMuPDF
 
     - name: Run script
-      run: python main.py
+      run: python .github/workflows/main.py
 
     - name: Upload text file
       uses: actions/upload-artifact@v2
