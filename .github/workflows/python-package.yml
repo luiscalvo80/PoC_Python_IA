@@ -20,17 +20,22 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install --only-binary :all: PyMuPDF
-        
-    - name: upload PDF_file
+        pip install PyMuPDF
+
+    - name: Upload PDF file
       uses: actions/upload-artifact@v4
       with:
-        name: YV1XZEHR3R2326083
-        path: C:\Users\lcalvo\OneDrive - Volvo Cars\Desktop\Professional Portfolio\Python\TEST\YV1XZEHR3R2326083.pdf
-        
+        name: pdf_file
+        path: pdf_files/YV1XZEHR3R2326083.pdf # Adjust the path as per your repository structure
 
     - name: Run script
-      run: python .github/workflows/main.py
+      run: python .github/workflows/extract_text.py
+
+    - name: Upload extracted text file
+      uses: actions/upload-artifact@v4
+      with:
+        name: extracted_text
+        path: ./output/extracted_text.txt # Adjust the path as per your script output
 
   save_text:
     needs: extract_text
@@ -40,16 +45,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Download text file
+    - name: Download extracted text file
       uses: actions/download-artifact@v2
       with:
         name: extracted_text
-        path: C:/Users/lcalvo/OneDrive - Volvo Cars/Desktop/Professional Portfolio/Python/TEST/
+        path: ./output/
 
     - name: Commit and push
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Add extracted text file" -a
+        git add ./output/extracted_text.txt
+        git commit -m "Add extracted text file"
         git push
