@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import os
 
 # Hardcoded path to the PDF file
-pdf_path = ""C:/Users/lcalvo/OneDrive - Volvo Cars/Desktop/Professional Portfolio/Python/TEST/YV1XZEHR3R2326083.pdf""
+pdf_path = "C:/Users/lcalvo/OneDrive - Volvo Cars/Desktop/Professional Portfolio/Python/TEST/YV1XZEHR3R2326083.pdf"
 
 def extract_text_from_pdf(pdf_path):
     # Check if the file exists
